@@ -1,0 +1,29 @@
+app:
+  host: localhost
+server:
+  port: 9009
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/short_link_db
+#    url: jdbc:postgresql://PostgreSQL:5432/socks_db
+    username: postgres
+    password: postgres
+    hikari:
+      schema: public
+
+  autoconfigure:
+    exclude:
+
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
