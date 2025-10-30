@@ -3,7 +3,7 @@
 CREATE TABLE data_of_links
 (
     id                  UUID                            NOT NULL,
-    alias               VARCHAR(10)                     NOT NULL,
+    alias               VARCHAR(10)                     NOT NULL UNIQUE,
     full_link           VARCHAR                         NOT NULL,
     CONSTRAINT pk_data_of_links PRIMARY KEY (id)
 );
