@@ -34,16 +34,19 @@ public class LinkServiceImpl implements LinkService {
             alias = generateAlias();
         }
 
-        Optional<LinkData> byAlias = repository.findByAlias(alias);
-        if (byAlias.isPresent()) {
-            throw new BusyAliasException(alias);
-        } else {
+        try {
+            Optional<LinkData> byAlias = repository.findByAlias(alias);
+            if (byAlias.isPresent()) {
+                throw new BusyAliasException(alias);
+            }
             LinkData linkData = LinkData.builder()
                     .alias(alias)
                     .fullLink(fullLink)
                     .build();
             repository.save(linkData);
             return getLinkFromAlias(alias);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusyAliasException(alias);
         }
     }
 
