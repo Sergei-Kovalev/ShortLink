@@ -1,0 +1,36 @@
+version: "1.0"
+
+networks:
+  app:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:16.0-alpine
+    container_name: postgres-db
+    #    volumes:
+    #      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=short_link_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - app
+
+  feedback-service:
+    build: .
+    container_name: shortLink-service
+    ports:
+      - 9009:9009
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/short_link_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    networks:
+      - app
+
